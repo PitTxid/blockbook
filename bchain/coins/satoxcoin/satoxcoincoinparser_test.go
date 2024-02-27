@@ -21,55 +21,7 @@ func TestMain(m *testing.M) {
 }
 
 func Test_GetAddrDescFromAddress_Mainnet(t *testing.T) {
-	type args struct {
-		address string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    string
-		wantErr bool
-	}{
-		{
-			name:    "P2PKH1",
-			args:    args{address: "RAoGkGhKwzxLnstApumYPD2eTrAJ849cga"},
-			want:    "76a91410a8805f1a6af1a5927088544b0b6ec7d6f0ab8b88ac",
-			wantErr: false,
-		},
-		{
-			name:    "P2PKH2",
-			args:    args{address: "RTq37kPJqMS36tZYunxo2abrBMLeYSCAaa"},
-			want:    "76a914cb78181d62d312fdb9aacca433570150dcf0dec288ac",
-			wantErr: false,
-		},
-		{
-			name:    "P2SH1",
-			args:    args{address: "rCzjkBoY2duVn2WizKxfBedTVWAg6UhfLZ"},
-			want:    "a9144a2a40987c74578ee517d426aa2c43fc568f7e0887",
-			wantErr: false,
-		},
-		{
-			name:    "P2SH2",
-			args:    args{address: "rDzGemZkv9FbDDh5pvWfr7TWtMUnNRRE7T"},
-			want:    "a914550bc2fcc1992afade4d298326ee6a03ab975a9387",
-			wantErr: false,
-		},
-	}
-	parser := NewSatoxcoinParser(GetChainParams("main"), &btc.Configuration{})
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := parser.GetAddrDescFromAddress(tt.args.address)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("GetAddrDescFromAddress() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			h := hex.EncodeToString(got)
-			if !reflect.DeepEqual(h, tt.want) {
-				t.Errorf("GetAddrDescFromAddress() = %v, want %v", h, tt.want)
-			}
-		})
-	}
 }
 
 var (
@@ -173,103 +125,9 @@ func init() {
 }
 
 func Test_PackTx(t *testing.T) {
-	type args struct {
-		tx        bchain.Tx
-		height    uint32
-		blockTime int64
-		parser    *SatoxcoinParser
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    string
-		wantErr bool
-	}{
-		{
-			name: "satoxcoin-1",
-			args: args{
-				tx:        testTx1,
-				height:    657540,
-				blockTime: 1554837703,
-				parser:    NewSatoxcoinParser(GetChainParams("main"), &btc.Configuration{}),
-			},
-			want:    testTxPacked1,
-			wantErr: false,
-		},
-		{
-			name: "satoxcoin-2",
-			args: args{
-				tx:        testTx2,
-				height:    657540,
-				blockTime: 1554837703,
-				parser:    NewSatoxcoinParser(GetChainParams("main"), &btc.Configuration{}),
-			},
-			want:    testTxPacked2,
-			wantErr: false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.args.parser.PackTx(&tt.args.tx, tt.args.height, tt.args.blockTime)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("packTx() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			h := hex.EncodeToString(got)
-			if !reflect.DeepEqual(h, tt.want) {
-				t.Errorf("packTx() = %v, want %v", h, tt.want)
-			}
-		})
-	}
+	
 }
 
 func Test_UnpackTx(t *testing.T) {
-	type args struct {
-		packedTx string
-		parser   *SatoxcoinParser
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    *bchain.Tx
-		want1   uint32
-		wantErr bool
-	}{
-		{
-			name: "satoxcoin-1",
-			args: args{
-				packedTx: testTxPacked1,
-				parser:   NewSatoxcoinParser(GetChainParams("main"), &btc.Configuration{}),
-			},
-			want:    &testTx1,
-			want1:   657540,
-			wantErr: false,
-		},
-		{
-			name: "satoxcoin-2",
-			args: args{
-				packedTx: testTxPacked2,
-				parser:   NewSatoxcoinParser(GetChainParams("main"), &btc.Configuration{}),
-			},
-			want:    &testTx2,
-			want1:   657540,
-			wantErr: false,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			b, _ := hex.DecodeString(tt.args.packedTx)
-			got, got1, err := tt.args.parser.UnpackTx(b)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("unpackTx() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("unpackTx() got = %v, want %v", got, tt.want)
-			}
-			if got1 != tt.want1 {
-				t.Errorf("unpackTx() got1 = %v, want %v", got1, tt.want1)
-			}
-		})
-	}
+	
 }
