@@ -4,8 +4,6 @@ go 1.19
 
 require (
 	github.com/Groestlcoin/go-groestl-hash v0.0.0-20181012171753-790653ac190c // indirect
-	github.com/ava-labs/avalanchego v1.9.7
-	github.com/ava-labs/coreth v0.11.6
 	github.com/bsm/go-vlq v0.0.0-20150828105119-ec6e8d4f5f4e
 	github.com/dchest/blake256 v1.0.0 // indirect
 	github.com/deckarep/golang-set v1.8.0
